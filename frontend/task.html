@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Task Tracking Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('your-background-image.jpg');
+            /* Replace 'your-background-image.jpg' with the actual path to your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #44414128;
+        }
+        
+        #container {
+            background-color: rgba(255, 255, 255, 0.219);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: left;
+        }
+        
+        .background-image {
+            background-image: url(bg3.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top;
+            /* width: 200px; */
+            height: 90vh;
+        }
+        
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        
+        form {
+            margin: 20px 0;
+        }
+        
+        h1 {
+            color: #1285a1d5;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 10px;
+        }
+        
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .Date {
+            font-size: small;
+        }
+    </style>
+</head>
+
+<body class="background-image">
+    <div id="container">
+        <h1>Task Tracking Tool</h1>
+        <form id="task-form">
+            <label for="description">Task Description:</label>
+            <input type="text" id="description" required><br><br>
+
+            <label for="assignee">Assignee:</label>
+            <input type="text" id="assignee" required><br><br>
+
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" required><br><br> Due Date
+            <div class="Date">
+                <label for="due_date"></label>
+                <input type="date" id="due_date" required><br><br>
+            </div>
+            <label for="priority">Priority (High/Medium/Low):</label>
+            <select id="priority">
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+
+            <input type="button" value="Add Task" onclick="addTask()">
+        </form>
+
+        <h2>Task List:</h2>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        
+       async function fetchData(){
+        const user=sessionStorage.getItem('user')
+        const response=await fetch(`http://localhost:8080/api/v1/taskyUsers/tasks?name=${user}`);
+        if (response.ok) {
+    const data = await response.json();
+
+    data.forEach(el => {
+      var taskInfo = `Description: ${el.description}, Assignee: ${el.assignee}, Due Date: ${el.due_date}, Priority: ${el.priority}`;
+
+      var taskList = document.getElementById("task-list");
+      var listItem = document.createElement("li");
+      listItem.textContent = taskInfo;
+
+      // Create a delete button
+      var deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => deleteTask(el.description)); // Assuming el.id is the unique identifier for the task
+      listItem.appendChild(deleteButton);
+
+      taskList.appendChild(listItem);
+    });
+  }
+}
+
+       fetchData();
+       async function addTask() {
+            var user=sessionStorage.getItem('user');
+            var description = document.getElementById("description").value;
+            var assignee = document.getElementById("assignee").value;
+            var due_date = document.getElementById("due_date").value;
+            var priority = document.getElementById("priority").value;
+            var email=document.getElementById('email').value;
+            var taskInfo = `Description: ${description}, Assignee: ${assignee}, Due Date: ${due_date}, Priority: ${priority}`;
+            data={description,assignee,due_date,priority,email,username:user}
+            const response=await fetch("http://localhost:8080/api/v1/taskyUsers/tasks",{
+            method:"POST",
+            body:JSON.stringify(data),
+            headers:{
+                "Content-Type":"application/json"
+            }
+         });
+             if(response.ok){
+            var taskList = document.getElementById("task-list");
+            var listItem = document.createElement("li");
+            listItem.textContent = taskInfo;
+            taskList.appendChild(listItem);
+            }
+            window.location.reload();
+        }
+
+
+       async function deleteTask(desc){
+         const response=await fetch('http://localhost:8080/api/v1/taskyUsers/tasks',{
+            method:"DELETE",
+            body:JSON.stringify({id:desc}),
+            headers:{
+                "Content-Type":"application/json"
+            }
+          })
+
+          if(response.ok)
+          {
+            window.location.reload();
+          }
+
+        }
+    </script>
+</body>
+
+</html>

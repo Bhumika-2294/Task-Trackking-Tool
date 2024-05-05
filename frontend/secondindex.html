@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login or Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .background-image {
+            /* background-image: url("background1.jpg.png");
+            background-size: cover;
+            background-repeat: no-repeat; */
+            /* background-position: top; */
+            /* width: 200px; */
+            height: 90vh;
+        }
+        
+        body {
+            /* background-image: url("background.jpg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top; */
+            font-family: Arial, sans-serif;
+            /* background-color: #f4f4f4; */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .form-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #333;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #666;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        #invalid {
+            display: none;
+        }
+        
+        .invalid {
+            color: #ff0000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Login or Register</h2>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button id="loginButton">Login</button>
+            <p id="invalid" class="invalid">Wrong email or password!</p>
+            <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
+        </form>
+
+        <form id="registerForm" style="display:none;">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+
+            <button id="registerButton">Register</button>
+
+            <p>Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
+        </form>
+    </div>
+
+
+    <script>
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.querySelector('form').style.display = 'none';
+        }
+
+        function showLoginForm() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.querySelector('form').style.display = 'block';
+        }
+
+        const fetchData = async(data) => {
+
+            const response = await fetch("http://localhost:8080/api/v1/taskyUsers", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                showLoginForm();
+            }
+        }
+
+        ;
+
+        document.getElementById('registerButton').addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            data = {
+                username,
+                password
+            }
+            console.log(data);
+            fetchData(data);
+        });
+        document.getElementById('loginButton').addEventListener('click', async(event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const data = {
+                username,
+                password
+            };
+
+            const response = await fetch('http://localhost:8080/api/v1/taskyUsers/login', {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const getData = await response.json()
+            if (response.ok) {
+                window.location.href = 'index1.html'; // Change the URL to the desired redirect location
+                sessionStorage.setItem("user", getData.username)
+            } else {
+                document.getElementById('invalid').style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Tasks</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ececec;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #34495e;
+            padding: 10px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #2c3e50;
+        }
+        
+        section {
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Completed Tasks</h1>
+    </header>
+
+    <nav>
+        <div>
+            <a href="index1.html">Dashboard</a>
+
+        </div>
+    </nav>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Task Name</th>
+                    <th>Assigned By</th>
+                    <th>Assigned Date</th>
+                    <th>Completed By</th>
+                    <th>Completion Date</th>
+                    <th>Time Taken</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Complete Project Proposal</td>
+                    <td>Dr Anita</td>
+                    <td>2023-11-01</td>
+                    <td>Bhumika</td>
+                    <td>2023-11-15</td>
+                    <td>10 hours</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Review Code Changes</td>
+                    <td>Dr Shrivastav</td>
+                    <td>2023-11-10</td>
+                    <td>bhumika</td>
+                    <td>2023-11-20</td>
+                    <td>15 hours</td>
+                </tr>
+                <!-- Add more completed tasks as needed -->
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        &copy; 2023 Task Tracking Tool. All rights reserved.
+    </footer>
+
+</body>
+
+</html>

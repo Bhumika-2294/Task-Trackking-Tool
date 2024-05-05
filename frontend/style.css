@@ -1,0 +1,10 @@
+.body {
+    border: 1px solid black;
+    padding: 25px;
+    background-repeat: round;
+}
+
+.nav {
+    background-color: #017575;
+    padding: 5px;
+}
